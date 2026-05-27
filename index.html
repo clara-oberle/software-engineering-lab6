@@ -1,1 +1,55 @@
 
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Recipe Manager</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<header class="site-header">
+			<div class="container header-inner">
+				<h1>Recipe Manager</h1>
+				<div class="search-wrap">
+					<input id="searchInput" type="search" placeholder="Search by name or ingredient..." aria-label="Search recipes" />
+				</div>
+			</div>
+		</header>
+
+		<main class="container main-grid">
+			<section class="form-section">
+				<h2>Add / Edit Recipe</h2>
+				<form id="recipeForm">
+					<label for="name">Recipe Name</label>
+					<input id="name" name="name" type="text" placeholder="e.g., Chocolate Chip Cookies" required />
+
+					<label for="ingredients">Ingredients (one per line or comma separated)</label>
+					<textarea id="ingredients" name="ingredients" rows="5" placeholder="Flour\nSugar\nEggs or: flour, sugar, eggs" required></textarea>
+
+					<label for="steps">Preparation Steps</label>
+					<textarea id="steps" name="steps" rows="6" placeholder="Step 1: ...\nStep 2: ..." required></textarea>
+
+					<div class="form-actions">
+						<button id="submitBtn" type="submit">Add Recipe</button>
+						<button id="cancelBtn" type="button" class="btn-secondary" hidden>Cancel</button>
+					</div>
+				</form>
+			</section>
+
+			<section class="recipes-section">
+				<div id="message" class="message" aria-live="polite"></div>
+				<h2>Recipes</h2>
+				<div id="recipesContainer" class="cards-grid" aria-live="polite"></div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="container">&copy; Recipe Manager — Saved locally in your browser</div>
+		</footer>
+
+		<script src="script.js"></script>
+	</body>
+</html>
+

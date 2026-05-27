@@ -45,6 +45,8 @@ function showMessage(text, type='success', actionLabel, actionCallback, duration
 		const act = document.createElement('button');
 		act.className = 'btn btn-undo';
 		act.textContent = actionLabel;
+		act.setAttribute('aria-label','Undo delete');
+		act.title = actionLabel;
 		act.addEventListener('click', ()=>{
 			actionCallback();
 			if(messageEl.contains(el)) messageEl.removeChild(el);
@@ -74,8 +76,12 @@ function renderRecipes(filter=''){
 		return false;
 	});
 
-	if(filtered.length===0){
-		recipesContainer.innerHTML = '<p class="meta">No recipes found.</p>';
+	if(filtered.length === 0){
+		if(list.length === 0){
+			recipesContainer.innerHTML = '<div class="card" style="text-align:center;padding:26px"><p class="meta">No recipes yet.</p><p class="meta" style="margin-top:6px;color:var(--muted-2)">Add your first recipe using the form.</p></div>';
+		}else{
+			recipesContainer.innerHTML = '<div class="card" style="text-align:center;padding:22px"><p class="meta">No recipes match your search.</p><p class="meta" style="margin-top:6px;color:var(--muted-2)">Try a different name or ingredient.</p></div>';
+		}
 		return;
 	}
 
@@ -92,8 +98,12 @@ function renderRecipes(filter=''){
 
 		const actions = document.createElement('div'); actions.className='card-actions';
 		const editBtn = document.createElement('button'); editBtn.className='btn btn-edit'; editBtn.textContent='Edit';
+		editBtn.setAttribute('aria-label', `Edit ${recipe.name}`);
+		editBtn.title = `Edit ${recipe.name}`;
 		editBtn.addEventListener('click', ()=> startEditRecipe(recipe.id));
 		const delBtn = document.createElement('button'); delBtn.className='btn btn-delete'; delBtn.textContent='Delete';
+		delBtn.setAttribute('aria-label', `Delete ${recipe.name}`);
+		delBtn.title = `Delete ${recipe.name}`;
 		delBtn.addEventListener('click', ()=> deleteRecipe(recipe.id));
 
 		actions.appendChild(editBtn); actions.appendChild(delBtn);
@@ -121,7 +131,7 @@ function startEditRecipe(id){
 }
 
 function deleteRecipe(id){
-	if(!confirm('Delete this recipe?')) return;
+	// remove immediately; provide Undo in toast
 	const list = getRecipes();
 	const del = list.find(r=>r.id===id);
 	const remaining = list.filter(r=>r.id!==id);

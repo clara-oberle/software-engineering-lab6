@@ -10,6 +10,9 @@ Agustina Ciponi,
 Alex Jarne,
 Nicolas Kramer
 
+Github repository:
+https://github.com/clara-oberle/software-engineering-lab6.git
+
 ## First Prompt and Initial Generation
 
 Prompt use for US-01:

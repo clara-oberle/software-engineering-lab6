@@ -50,3 +50,7 @@ Requirements:
 - Add toast notification styling
 - Improve the recipe form layout
 - Use a clean color palette
+
+In the image we can see that now we can search for recipes using the search bar at the top right of the screen.
+<img width="2476" height="1270" alt="image" src="https://github.com/user-attachments/assets/a73b975a-06c3-4aab-a9cd-5e91b9a81c69" />
+

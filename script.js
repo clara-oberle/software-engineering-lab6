@@ -12,6 +12,8 @@ const submitBtn = document.getElementById('submitBtn');
 const cancelBtn = document.getElementById('cancelBtn');
 
 let editingId = null;
+let lastDeleted = null;
+let undoTimeout = null;
 
 function getRecipes(){
 	try{
@@ -31,13 +33,34 @@ function normalizeIngredients(text){
 	return text.split(/\r?\n|,/).map(s=>s.trim()).filter(Boolean);
 }
 
-function showMessage(text, type='success'){
+function showMessage(text, type='success', actionLabel, actionCallback, duration=4500){
 	messageEl.innerHTML = '';
 	const el = document.createElement('div');
 	el.className = 'toast ' + (type==='success'? 'toast-success':'toast-error');
-	el.textContent = text;
+	const wrapper = document.createElement('div'); wrapper.className = 'toast-wrapper';
+	const txt = document.createElement('div'); txt.className = 'toast-text'; txt.textContent = text;
+	wrapper.appendChild(txt);
+
+	if(actionLabel && typeof actionCallback === 'function'){
+		const act = document.createElement('button');
+		act.className = 'btn btn-undo';
+		act.textContent = actionLabel;
+		act.addEventListener('click', ()=>{
+			actionCallback();
+			if(messageEl.contains(el)) messageEl.removeChild(el);
+			clearTimeout(undoTimeout);
+			lastDeleted = null;
+		});
+		wrapper.appendChild(act);
+	}
+
+	el.appendChild(wrapper);
 	messageEl.appendChild(el);
-	setTimeout(()=>{ if(messageEl.contains(el)) messageEl.removeChild(el); }, 3000);
+
+	// auto-dismiss
+	const t = setTimeout(()=>{ if(messageEl.contains(el)) messageEl.removeChild(el); if(actionLabel) lastDeleted = null; }, duration);
+	// keep ref so we can cancel in undo
+	undoTimeout = t;
 }
 
 function renderRecipes(filter=''){
@@ -68,9 +91,9 @@ function renderRecipes(filter=''){
 		const steps = document.createElement('div'); steps.className='steps'; steps.textContent = recipe.steps;
 
 		const actions = document.createElement('div'); actions.className='card-actions';
-		const editBtn = document.createElement('button'); editBtn.className='edit-btn'; editBtn.textContent='Edit';
+		const editBtn = document.createElement('button'); editBtn.className='btn btn-edit'; editBtn.textContent='Edit';
 		editBtn.addEventListener('click', ()=> startEditRecipe(recipe.id));
-		const delBtn = document.createElement('button'); delBtn.className='delete-btn'; delBtn.textContent='Delete';
+		const delBtn = document.createElement('button'); delBtn.className='btn btn-delete'; delBtn.textContent='Delete';
 		delBtn.addEventListener('click', ()=> deleteRecipe(recipe.id));
 
 		actions.appendChild(editBtn); actions.appendChild(delBtn);
@@ -99,10 +122,24 @@ function startEditRecipe(id){
 
 function deleteRecipe(id){
 	if(!confirm('Delete this recipe?')) return;
-	const list = getRecipes().filter(r=>r.id!==id);
+	const list = getRecipes();
+	const del = list.find(r=>r.id===id);
+	const remaining = list.filter(r=>r.id!==id);
+	saveRecipes(remaining);
+	lastDeleted = del;
+	renderRecipes(searchInput.value);
+	showMessage('Recipe deleted', 'success', 'Undo', undoDelete, 6000);
+}
+
+function undoDelete(){
+	if(!lastDeleted) return;
+	const list = getRecipes();
+	list.unshift(lastDeleted);
 	saveRecipes(list);
 	renderRecipes(searchInput.value);
-	showMessage('Recipe deleted');
+	showMessage('Deletion undone');
+	lastDeleted = null;
+	clearTimeout(undoTimeout);
 }
 
 form.addEventListener('submit', function(e){

@@ -18,3 +18,4 @@ Copilot analyzed the prompt and generated the base implementation across three s
 
 This first generation gave us a functional starting point that we later refined with more specific prompts and iterative improvements.
 <img width="1423" height="761" alt="image" src="https://github.com/user-attachments/assets/4e0ddce9-85bf-4235-9ffd-3179f631cca4" />
+<img width="1892" height="859" alt="image" src="https://github.com/user-attachments/assets/34a67007-55ba-4fca-89a0-10429cd25815" />

@@ -2,12 +2,12 @@
 Repository used for Lab 6: Prompts Engineering with GitHub and VC following a set of functional requirements
 
 Team Members:
-Clara Oberle Melero
-Álvaro García López
-Bet Jara
-Mikel Carbones
-Agustina Ciponi
-Alex Jarne
+Clara Oberle Melero,
+Álvaro García López,
+Bet Jara,
+Mikel Carbones,
+Agustina Ciponi,
+Alex Jarne,
 Nicolas Kramer
 
 ## First Prompt and Initial Generation
@@ -106,4 +106,13 @@ Required improvements:
 
 We can see that we can successfully delete the recipe and we get a message confirming it.
 <img width="2278" height="1182" alt="image" src="https://github.com/user-attachments/assets/96091b2b-d45a-4d78-888f-e4a8ae6216aa" />
+
+
+## Lessons learned using GitHub Copilot
+
+In this lab, we learned that GitHub Copilot is very useful to create a first working version of an application quickly. With a clear prompt, it generated the main structure of the Recipe Management app, including the form, recipe cards, search, edit/delete actions, localStorage, and confirmation messages.
+
+We also learned that the best results come from using Copilot step by step. Instead of asking for everything in one prompt, we improved the app through several iterations: first the basic functionality, then the UI, then editing and undo, and finally the delete user story.
+
+However, Copilot does not replace testing or human review. We still had to check that each feature worked correctly and that the acceptance criteria were really satisfied. Overall, Copilot helped us develop faster, but the quality of the result depended on writing specific prompts, testing the app, and refining the code.
 
